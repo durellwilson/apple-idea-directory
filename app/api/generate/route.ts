@@ -1,33 +1,40 @@
 import { openai } from '@ai-sdk/openai';
-import { streamText } from 'ai';
+import { generateObject } from 'ai';
+import { z } from 'zod';
 
 export const runtime = 'edge';
+
+const appIdeaSchema = z.object({
+  name: z.string().describe('App name'),
+  tagline: z.string().describe('One-line description'),
+  description: z.string().describe('Detailed description'),
+  platforms: z.array(z.string()).describe('Target platforms'),
+  category: z.string().describe('App category'),
+  features: z.array(z.string()).describe('Key features'),
+  techStack: z.array(z.string()).describe('Recommended technologies'),
+  gtmStrategy: z.string().describe('Go-to-market strategy'),
+  monetization: z.string().describe('Revenue model'),
+  targetAudience: z.string().describe('Target users'),
+  uniqueValue: z.string().describe('Unique selling point'),
+});
 
 export async function POST(req: Request) {
   const { platform } = await req.json();
 
-  const result = await streamText({
+  const { object } = await generateObject({
     model: openai('gpt-4-turbo'),
-    system: `You are an Apple ecosystem app idea generator. Generate innovative, practical app ideas for ${platform}.
+    schema: appIdeaSchema,
+    prompt: `Generate an innovative, practical app idea for ${platform} that leverages Apple ecosystem features.
 
-Format your response as JSON:
-{
-  "name": "App Name",
-  "tagline": "One-line description",
-  "description": "Detailed description (2-3 sentences)",
-  "platforms": ["iOS", "macOS", etc],
-  "category": "Productivity/Health/Entertainment/etc",
-  "features": ["Feature 1", "Feature 2", "Feature 3"],
-  "techStack": ["SwiftUI", "SwiftData", "CloudKit", etc],
-  "gtmStrategy": "Go-to-market approach (2-3 sentences)",
-  "monetization": "Free/Freemium/Paid/Subscription",
-  "targetAudience": "Who is this for?",
-  "uniqueValue": "What makes this special?"
-}
+Requirements:
+- Must be unique and creative
+- Should integrate with Apple frameworks (SwiftUI, SwiftData, CloudKit, HealthKit, etc)
+- Include realistic GTM strategy
+- Consider App Store guidelines
+- Focus on user value
 
-Be creative, practical, and focus on Apple ecosystem integration.`,
-    prompt: `Generate an innovative app idea for ${platform}`,
+Platform: ${platform}`,
   });
 
-  return result.toDataStreamResponse();
+  return Response.json(object);
 }
