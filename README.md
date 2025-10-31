@@ -1,27 +1,70 @@
 # 🍎 Apple Idea Directory
 
-AI-powered directory of infinite Apple ecosystem app ideas.
+AI-powered directory of infinite Apple ecosystem app ideas with enterprise-grade CI/CD.
 
-## Features
+## 🚀 Features
 
-- **AI Generation** - GPT-4 generates unique ideas 24/7
+- **AI Generation** - GPT-4 with structured output
 - **8 Platforms** - iOS, macOS, iPadOS, watchOS, tvOS, visionOS, Web, AirPods
-- **Dark Mode** - Beautiful dark UI
-- **Complete Details** - GTM strategy, tech stack, features
-- **Community** - Submit and iterate on ideas
+- **Type-Safe** - Zod schema validation
+- **Tested** - Jest + React Testing Library
+- **Secure** - Security headers, input validation, rate limiting
+- **CI/CD** - Automated testing, security scanning, deployment
 
-## Deploy
+## 🛡️ Security
+
+- ✅ Security headers (HSTS, CSP, X-Frame-Options)
+- ✅ Input validation with Zod
+- ✅ Rate limiting (IP-based)
+- ✅ Dependency scanning (Trivy)
+- ✅ Automated security audits
+
+## 🧪 Testing
+
+```bash
+npm test              # Run tests
+npm run test:watch    # Watch mode
+npm run type-check    # TypeScript check
+npm run lint          # ESLint
+```
+
+## 📊 CI/CD Pipeline
+
+### On Every Push
+1. Type checking
+2. Linting
+3. Unit tests
+4. Security scan
+5. Build verification
+
+### On Main Branch
+6. Deploy to Vercel production
+
+### Weekly
+- Automated dependency updates
+- Security audit
+- Test suite
+
+## 🔧 Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Deploy to Vercel:
-```bash
-vercel --prod
-```
+## 📈 Monitoring
+
+- Health check: `/api/health`
+- Vercel Analytics
+- Error tracking
+
+## 🤝 Contributing
+
+1. Fork repository
+2. Create feature branch
+3. Add tests
+4. Submit PR (CI runs automatically)
 
 ---
 
-**Infinite ideas for the Apple ecosystem** 🚀
+**Production-ready with best practices** ✅

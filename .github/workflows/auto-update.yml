@@ -1,0 +1,33 @@
+name: Auto Update Dependencies
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Weekly
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Update dependencies
+        run: |
+          npm update
+          npm audit fix
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: update dependencies'
+          title: 'chore: automated dependency updates'
+          body: 'Automated dependency updates'
+          branch: 'auto-update-deps'

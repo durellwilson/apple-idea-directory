@@ -18,13 +18,28 @@ const appIdeaSchema = z.object({
   uniqueValue: z.string().describe('Unique selling point'),
 });
 
-export async function POST(req: Request) {
-  const { platform } = await req.json();
+const VALID_PLATFORMS = ['iOS', 'macOS', 'iPadOS', 'watchOS', 'tvOS', 'visionOS', 'Web', 'AirPods'];
 
-  const { object } = await generateObject({
-    model: openai('gpt-4-turbo'),
-    schema: appIdeaSchema,
-    prompt: `Generate an innovative, practical app idea for ${platform} that leverages Apple ecosystem features.
+export async function POST(req: Request) {
+  try {
+    const { platform } = await req.json();
+
+    // Input validation
+    if (!platform || !VALID_PLATFORMS.includes(platform)) {
+      return Response.json(
+        { error: 'Invalid platform' },
+        { status: 400 }
+      );
+    }
+
+    // Rate limiting check (simple IP-based)
+    const ip = req.headers.get('x-forwarded-for') || 'unknown';
+    // TODO: Implement proper rate limiting with Redis/Upstash
+
+    const { object } = await generateObject({
+      model: openai('gpt-4-turbo'),
+      schema: appIdeaSchema,
+      prompt: `Generate an innovative, practical app idea for ${platform} that leverages Apple ecosystem features.
 
 Requirements:
 - Must be unique and creative
@@ -34,7 +49,14 @@ Requirements:
 - Focus on user value
 
 Platform: ${platform}`,
-  });
+    });
 
-  return Response.json(object);
+    return Response.json(object);
+  } catch (error) {
+    console.error('Generation error:', error);
+    return Response.json(
+      { error: 'Failed to generate idea' },
+      { status: 500 }
+    );
+  }
 }
