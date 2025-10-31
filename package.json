@@ -9,7 +9,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "^14.2.0",
@@ -17,7 +19,8 @@
     "react-dom": "^18.3.0",
     "ai": "^3.3.0",
     "@ai-sdk/openai": "^0.0.50",
-    "zod": "^3.23.0"
+    "zod": "^3.23.0",
+    "@vercel/kv": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -32,6 +35,7 @@
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "eslint": "^8.0.0",
-    "eslint-config-next": "^14.2.0"
+    "eslint-config-next": "^14.2.0",
+    "@playwright/test": "^1.40.0"
   }
 }
