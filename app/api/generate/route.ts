@@ -33,8 +33,8 @@ export async function POST(req: Request) {
     }
 
     // Rate limiting check (simple IP-based)
-    const ip = req.headers.get('x-forwarded-for') || 'unknown';
     // TODO: Implement proper rate limiting with Redis/Upstash
+    // const ip = req.headers.get('x-forwarded-for') || 'unknown';
 
     const { object } = await generateObject({
       model: openai('gpt-4-turbo'),

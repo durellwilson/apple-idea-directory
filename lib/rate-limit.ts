@@ -12,7 +12,7 @@ export async function rateLimit(
     if (count === 1) await kv.expire(key, window);
     const remaining = Math.max(0, limit - count);
     return { success: count <= limit, remaining };
-  } catch (error) {
+  } catch {
     return { success: true, remaining: limit };
   }
 }
